@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_app/pages/active_todos.dart';
+import 'package:todo_app/pages/completed_todos.dart';
 import 'package:todo_app/utils/debounce.dart';
 
 import '../models/todo_model.dart';
@@ -17,7 +19,11 @@ class TodosPage extends StatefulWidget {
 }
 
 class _TodosPageState extends State<TodosPage> {
-  List<Widget> pages = [];
+  List<Widget> pages = [
+    AllPage(),
+    ActiveTodos(),
+    CompletedTodos(),
+  ];
   int _pageIndex = 0;
   void _onitemTapped(int newIndex) {
     setState(() {
