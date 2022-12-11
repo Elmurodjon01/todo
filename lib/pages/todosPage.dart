@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/pages/active_todos.dart';
 import 'package:todo_app/pages/completed_todos.dart';
@@ -33,7 +34,7 @@ class _TodosPageState extends State<TodosPage> {
 
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
+    // double height = MediaQuery.of(context).size.height;
     return Scaffold(
       body: pages.elementAt(_pageIndex),
       bottomNavigationBar: BottomNavigationBar(
@@ -68,22 +69,52 @@ class AllPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
-          child: Column(
-            children: [
-              SearchAndFilterTodo(),
-              // TodoHeader(),
-              // CreateTodo(),
-              // SizedBox(height: height / 35),
-              // SizedBox(
-              //   height: 10,
-              // ),
-              ShowTodos(),
-            ],
+      child: Stack(
+        alignment: Alignment.bottomCenter,
+        children: [
+          SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+              child: Column(
+                children: [
+                  SearchAndFilterTodo(),
+                  // TodoHeader(),
+
+                  // SizedBox(height: height / 35),
+                  // SizedBox(
+                  //   height: 10,
+                  // ),
+                  ShowTodos(),
+                ],
+              ),
+            ),
           ),
-        ),
+          Container(
+            height: 50,
+            width: 50,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(25),
+              color: Colors.grey,
+            ),
+            child: IconButton(
+              onPressed: () => showMaterialModalBottomSheet(
+                backgroundColor: Color.fromARGB(255, 99, 90, 90),
+                context: context,
+                builder: (context) => Container(
+                  height: MediaQuery.of(context).size.height / 2,
+                  child: Center(
+                    child: Padding(
+                      padding:
+                          const EdgeInsets.only(left: 15, right: 15, top: 10),
+                      child: CreateTodo(),
+                    ),
+                  ),
+                ),
+              ),
+              icon: Icon(Icons.add),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -127,17 +158,30 @@ class _CreateTodoState extends State<CreateTodo> {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      controller: newTodoController,
-      decoration: InputDecoration(
-        label: Text('What to do?'),
-      ),
-      onSubmitted: (String todoDecs) {
-        if (todoDecs != null && todoDecs.trim().isNotEmpty) {
-          context.read<TodoList>().addTodo(todoDecs);
-          newTodoController.clear();
-        }
-      },
+    return Column(
+      children: [
+        TextField(
+          controller: newTodoController,
+          decoration: InputDecoration(
+            label: Text('What to do?'),
+          ),
+          onSubmitted: (String todoDecs) {
+            if (todoDecs != null && todoDecs.trim().isNotEmpty) {
+              context.read<TodoList>().addTodo(todoDecs);
+              newTodoController.clear();
+              Navigator.of(context).pop();
+            }
+          },
+        ),
+        // SizedBox(
+        //   height: MediaQuery.of(context).size.height * 0.1,
+        // ),
+        // MaterialButton(
+        //   color: Colors.white,
+        //   onPressed: () {},
+        //   child: Text('Save'),
+        // ),
+      ],
     );
   }
 }
