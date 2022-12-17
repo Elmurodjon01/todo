@@ -36,6 +36,26 @@ class _TodosPageState extends State<TodosPage> {
   Widget build(BuildContext context) {
     // double height = MediaQuery.of(context).size.height;
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.deepOrange,
+        child: Icon(
+          Icons.add,
+          size: 30,
+        ),
+        onPressed: () => showMaterialModalBottomSheet(
+          backgroundColor: Color.fromARGB(255, 99, 90, 90),
+          context: context,
+          builder: (context) => Container(
+            height: MediaQuery.of(context).size.height / 2,
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 15, right: 15, top: 10),
+                child: CreateTodo(),
+              ),
+            ),
+          ),
+        ),
+      ),
       body: pages.elementAt(_pageIndex),
       bottomNavigationBar: BottomNavigationBar(
         onTap: _onitemTapped,
@@ -89,31 +109,18 @@ class AllPage extends StatelessWidget {
               ),
             ),
           ),
-          Container(
-            height: 50,
-            width: 50,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(25),
-              color: Colors.grey,
-            ),
-            child: IconButton(
-              onPressed: () => showMaterialModalBottomSheet(
-                backgroundColor: Color.fromARGB(255, 99, 90, 90),
-                context: context,
-                builder: (context) => Container(
-                  height: MediaQuery.of(context).size.height / 2,
-                  child: Center(
-                    child: Padding(
-                      padding:
-                          const EdgeInsets.only(left: 15, right: 15, top: 10),
-                      child: CreateTodo(),
-                    ),
-                  ),
-                ),
-              ),
-              icon: Icon(Icons.add),
-            ),
-          ),
+          // Container(
+          //   height: 50,
+          //   width: 50,
+          //   decoration: BoxDecoration(
+          //     borderRadius: BorderRadius.circular(25),
+          //     color: Colors.grey,
+          //   ),
+          //   //TODO look here
+          //   child: IconButton(
+          //     onPressed: () =>
+          //     icon: Icon(Icons.add),
+          //
         ],
       ),
     );
