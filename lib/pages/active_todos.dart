@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:todo_app/pages/todosPage.dart';
 import 'package:todo_app/providers/providers.dart';
 
-import '../providers/filtered_todos.dart';
+import '../models/todo_model.dart';
 
 class ActiveTodos extends StatelessWidget {
   const ActiveTodos({super.key});
@@ -12,7 +12,16 @@ class ActiveTodos extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: ShowTodos(),
+        child: Column(
+          children: [
+            ShowActiveTodos(),
+            TextButton(
+              onPressed: () =>
+                  context.read<TodoFilter>().changefilter(Filter.active),
+              child: Text('shiw'),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -28,9 +37,7 @@ class ShowActiveTodos extends StatelessWidget {
       primary: false,
       shrinkWrap: true,
       itemBuilder: (context, index) {
-        return TodoItem(
-          todo: activeTodos[index],
-        );
+        return TodoItem(todo: activeTodos[index]);
       },
       separatorBuilder: ((context, index) {
         return Divider(

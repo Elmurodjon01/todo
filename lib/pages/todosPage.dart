@@ -105,6 +105,11 @@ class AllPage extends StatelessWidget {
                   //   height: 10,
                   // ),
                   ShowTodos(),
+                  TextButton(
+                    onPressed: () =>
+                        context.read<TodoFilter>().changefilter(Filter.all),
+                    child: Text('show'),
+                  ),
                 ],
               ),
             ),
@@ -231,29 +236,29 @@ class SearchAndFilterTodo extends StatelessWidget {
     );
   }
 
-  Widget filterButton(BuildContext context, Filter filter) {
-    return TextButton(
-      onPressed: () {
-        context.read<TodoFilter>().changefilter(filter);
-      },
-      child: Text(
-        filter == Filter.all
-            ? 'All'
-            : filter == Filter.active
-                ? 'Active'
-                : 'Completed',
-        style: TextStyle(
-          fontSize: 18,
-          color: textColor(context, filter),
-        ),
-      ),
-    );
-  }
+  // Widget filterButton(BuildContext context, Filter filter) {
+  //   return TextButton(
+  //     onPressed: () {
+  //       context.read<TodoFilter>().changefilter(filter);
+  //     },
+  //     child: Text(
+  //       filter == Filter.all
+  //           ? 'All'
+  //           : filter == Filter.active
+  //               ? 'Active'
+  //               : 'Completed',
+  //       style: TextStyle(
+  //         fontSize: 18,
+  //         color: textColor(context, filter),
+  //       ),
+  //     ),
+  //   );
+  // }
 
-  Color textColor(BuildContext context, Filter filter) {
-    final currentFilter = context.watch<TodoFilter>().state.filter;
-    return currentFilter == filter ? Colors.blue : Colors.grey;
-  }
+  // Color textColor(BuildContext context, Filter filter) {
+  //   final currentFilter = context.watch<TodoFilter>().state.filter;
+  //   return currentFilter == filter ? Colors.blue : Colors.grey;
+  // }
 }
 
 class ShowTodos extends StatelessWidget {
@@ -281,40 +286,41 @@ class ShowTodos extends StatelessWidget {
       shrinkWrap: true,
       itemBuilder: (context, index) {
         return Dismissible(
-            background: showDismissBack(0),
-            secondaryBackground: showDismissBack(1),
-            onDismissed: (_) {
-              context.read<TodoList>().removeTodo(todos[index]);
-            },
-            confirmDismiss: (_) {
-              return showDialog(
-                  barrierDismissible: false,
-                  context: context,
-                  builder: (context) {
-                    return AlertDialog(
-                      title: Text('Are you sure?'),
-                      content: Text('Do you really wanna delete?'),
-                      actions: [
-                        TextButton(
-                          onPressed: () {
-                            Navigator.pop(context, false);
-                          },
-                          child: Text('NO'),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.pop(context, true);
-                          },
-                          child: Text('YES'),
-                        ),
-                      ],
-                    );
-                  });
-            },
-            key: ValueKey(todos[index].id),
-            child: TodoItem(
-              todo: todos[index],
-            ));
+          background: showDismissBack(0),
+          secondaryBackground: showDismissBack(1),
+          onDismissed: (_) {
+            context.read<TodoList>().removeTodo(todos[index]);
+          },
+          confirmDismiss: (_) {
+            return showDialog(
+                barrierDismissible: false,
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: Text('Are you sure?'),
+                    content: Text('Do you really wanna delete?'),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context, false);
+                        },
+                        child: Text('NO'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context, true);
+                        },
+                        child: Text('YES'),
+                      ),
+                    ],
+                  );
+                });
+          },
+          key: ValueKey(todos[index].id),
+          child: TodoItem(
+            todo: todos[index],
+          ),
+        );
       },
       separatorBuilder: ((context, index) {
         return Divider(
